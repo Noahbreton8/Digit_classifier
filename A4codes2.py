@@ -1,7 +1,6 @@
 import time
 
 import numpy as np
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -16,10 +15,9 @@ def learn(X, y):
     print(device)
     model = Net().to(device)
     
-    # Optimizer: Stochastic gradient descent
     optimizer = optim.Adam(model.parameters(), lr=0.01)
         
-    n_epochs = 2
+    n_epochs = 30
     start_time = time.time()
     for epoch in range(n_epochs):
         print(epoch)
@@ -122,7 +120,6 @@ def test(model, model2, test_dataloader, testdataloader2, device):
 
 
 # Training
-
 def classify(Xtest, model):
     model.eval()  # entering evaluation mode (dropout behaves differently)
     yhat = []
@@ -134,9 +131,6 @@ def classify(Xtest, model):
             yhat.append(pred)
     return yhat
 
-
-
-
 # train_data = np.loadtxt('A4data/A4train.csv', delimiter=',')
 # train_y = train_data[:, 0]
 # train_X = train_data[:, 1:] / 255.
@@ -145,14 +139,14 @@ def classify(Xtest, model):
 train_data = np.loadtxt('A4data/A4train.csv', delimiter=',')
 train_y = train_data[:, 0]
 train_X = train_data[:, 1: 28*28 *2 +1] / 255.
-train2_X = np.concatenate([train_data[:, 1: 28*28 *1+1] / 255., train_data[:, 28*28 *2 + 1:] / 255], axis=1)
+train2_X = np.concatenate([train_data[:, 1: 28*28 *1+1] / 255., train_data[:, 28*28 *2 + 1:] / 255.], axis=1)
 _, traindataloader = prepareData(train_X, train_y)
-# _, train2dataloader = prepareData(train2_X, train_y)
+_, train2dataloader = prepareData(train2_X, train_y)
 
 test_data = np.loadtxt('A4data/A4val.csv', delimiter=',')
 test_y = test_data[:, 0]
 test_X = test_data[:, 1: 28*28 *2 +1] / 255.
-test2_X = np.concatenate([test_data[:, 1: 28*28 *1+1] / 255., test_data[:, 28*28 *2 + 1:] / 255], axis=1)
+test2_X = np.concatenate([test_data[:, 1: 28*28 *1+1] / 255., test_data[:, 28*28 *2 + 1:] / 255.], axis=1)
 _, testdataloader = prepareData(test_X, test_y)
 _, testdataloader2 = prepareData(test2_X, test_y)
     
