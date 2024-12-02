@@ -16,59 +16,6 @@ def plotImg(x):
     plt.imshow(img, cmap="gray")
     plt.show()
 
-# Network definition
-# class Net(nn.Module):
-#     def __init__(self):
-#         super(Net, self).__init__()
-
-#         #Model data for top and middle images combined
-#         self.fc1_a = nn.Linear(1568, 512)
-#         self.bn1_a = nn.BatchNorm1d(512)
-#         self.fc2_a = nn.Linear(512, 256)
-#         self.bn2_a = nn.BatchNorm1d(256)
-#         self.fc3_a = nn.Linear(256, 10)
-
-#         #MSodel data for top and bottom images combined
-#         self.fc1_b = nn.Linear(1568, 512)
-#         self.bn1_b = nn.BatchNorm1d(512) 
-#         self.fc2_b = nn.Linear(512, 256)
-#         self.bn2_b = nn.BatchNorm1d(256)
-#         self.fc3_b = nn.Linear(256, 10)
-
-#         #Dropout is used for both models
-#         self.dropout = nn.Dropout(0.25)
-
-#     def forward(self, x):
-#         #Gets top and middle images
-#         x1 = x[:, : 2 * 28 * 28]
-
-#         #Gets top and bottom images
-#         x2 = torch.cat((x[:, : 28 * 28], x[:, 28 * 28 * 2 :]), dim=1)
-
-#         x1 = self.bn1_a(self.fc1_a(x1))
-#         x1 = F.relu(x1)
-#         x1 = self.dropout(x1)
-#         x1 = self.bn2_a(self.fc2_a(x1))
-#         x1 = F.relu(x1)
-#         x1 = self.dropout(x1)
-#         out1 = F.log_softmax(self.fc3_a(x1), dim=1)
-
-#         x2 = self.bn1_b(self.fc1_b(x2))
-#         x2 = F.relu(x2)
-#         x2 = self.dropout(x2)
-#         x2 = self.bn2_b(self.fc2_b(x2))
-#         x2 = F.relu(x2)
-#         x2 = self.dropout(x2)
-#         out2 = F.log_softmax(self.fc3_b(x2), dim=1)
-
-#         #For each element in batch get which output is larger
-#         output_max1 = out1.amax(dim=1, keepdim=True)
-#         output_max2 = out2.amax(dim=1, keepdim=True)
-#         filter = output_max1 > output_max2
-#         output = torch.where(filter, out1, out2)
-
-#         return output
-
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -98,7 +45,7 @@ class Net(nn.Module):
         self.fc3_b = nn.Linear(256, 10)
 
         # Dropout to regularize
-        self.dropout = nn.Dropout(0.25)
+        self.dropout = nn.Dropout(0.3)
 
     def forward(self, x):
         batch_size = x.size(0)
@@ -148,8 +95,6 @@ class Net(nn.Module):
         output = torch.where(filter, out1, out2)
 
         return output
-
-
 
 # Prepare data
 def prepareData(X, y):
